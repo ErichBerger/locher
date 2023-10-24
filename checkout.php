@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php 
-    $page->start("cool title"); 
+    $page->start("Checkout"); 
 
     //Add other views from other view classes here
     

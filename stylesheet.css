@@ -1,0 +1,72 @@
+:root {
+    --fontsize: 1.3rem;
+    --base-size: 1rem;
+    --scale: 1.25;
+    --h1: calc(var(--h2) * var(--scale));
+    --h2: calc(var(--h3) * var(--scale));
+    --h3: calc(var(--h4) * var(--scale));
+    --h4: calc(var(--h5) * var(--scale));
+    --h5: calc(var(--h6) * var(--scale));
+    --h6: calc(var(--base-size) * var(--scale));
+}
+
+html {
+    box-sizing: border-box;
+    align-content: center;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: lightsalmon;
+    align-content: center;
+    font-family: 'Martian Mono', monospace;
+    width: 100%;
+}
+
+nav {
+    position: fixed;
+    height: 4rem;
+    background-color: orangered;
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+nav a {
+    font-weight: bold;
+    font-size: 2rem;
+    font-family:'Courier New', Courier, monospace;
+    height: 4rem;
+    padding: 1rem;
+    color: purple;
+}
+
+#current-tab {
+    background-color: lightsalmon;
+}
+
+nav a:hover {
+    background-color: lightsalmon;
+}
+
+nav a:link {
+    text-decoration: none;
+}
+
+h1 {
+    font-family:'Courier New', Courier, monospace;
+    color: purple;
+    font-size: var(--h1);
+    justify-content: center;
+}
+
+h2 {font-size: var(--h2);}
+h3 {font-size: var(--h3);}
+h4 {font-size: var(--h4);}
+h5 {font-size: var(--h5);}
