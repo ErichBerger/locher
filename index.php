@@ -1,14 +1,16 @@
-<?php 
-    include 'includes/view-autoloader.inc.php';
-    $page = new Template();
-?>
-<!DOCTYPE html>
-<html lang="en">
-    <?php 
-    $page->start("cool title"); 
+<?php
 
-    //Add other views from other view classes here
-    
-    $page->end();
-    ?>
-</html>
+require 'functions.php';
+$uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+
+$routes = [
+    '/' => 'controllers/index.php',
+    '/checkout' => 'controllers/checkout.php',
+    '/menu' => 'controllers/menu.php',
+    'myaccount' => 'controllers/myaccount.php'
+];
+
+if (array_key_exists($uri, $routes)) {
+    require $routes[$uri];
+}
+?>
