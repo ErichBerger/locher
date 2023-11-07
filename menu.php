@@ -1,6 +1,6 @@
 <?php 
 
-    $currentTab = 'menu';
+    $currentTab = 'Menu';
     require 'views/menu.views.php';
 
 ?>

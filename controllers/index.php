@@ -1,17 +1,7 @@
 <?php 
 
     $currentTab = 'home';
-    require 'views/index.views.php';
+    require '../views/index.views.php';
+    echo "hello from the index";
 
-    $page = new Template();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-    <?php 
-    $page->start("cool title"); 
-
-    //Add other views from other view classes here
-    
-    $page->end();
-    ?>
-</html>

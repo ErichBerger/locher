@@ -1,5 +1,24 @@
+:root {
+    --fontsize: 1.3rem;
+    --base-size: 1rem;
+    --scale: 1.25;
+    --h1: calc(var(--h2) * var(--scale));
+    --h2: calc(var(--h3) * var(--scale));
+    --h3: calc(var(--h4) * var(--scale));
+    --h4: calc(var(--h5) * var(--scale));
+    --h5: calc(var(--h6) * var(--scale));
+    --h6: calc(var(--base-size) * var(--scale));
+    --menu-text: #BC8DA0;
+    --menu: #656256;
+    --background: #9EBC9F;
+    --highlight: #E3B5A4;
+    --text: #230903;
+
+}
+
 html {
     box-sizing: border-box;
+    align-content: center;
 }
 
 *, *::before, *::after {
@@ -7,10 +26,79 @@ html {
 }
 
 body {
+    margin: 0;
     padding: 0;
-    border: 0;
-    font-family: Arial, sans-serif;
+    background-color: var(--background);
+    font-family: 'Martian Mono', monospace;
 }
+
+
+/* header and nav styles */
+
+
+header {
+    max-width: 1200px;
+    padding: 0;
+    margin: 0 auto;
+    background-color: var(--menu);
+}
+
+/* Nav*/
+nav {
+    padding: 0;
+    margin: 0;
+
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 5%;
+}
+
+
+nav li {
+    margin: 0;
+    padding: 0;
+    flex-basis: 30%;
+    text-align: center;
+}
+
+nav a {
+    height: var(--h2);
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: var(--menu-text);
+    display: block;
+    
+}
+
+nav li:hover {
+    background-color: var(--highlight);
+    color: var(--menu);
+}
+/* Main*/
+main {
+    text-align: center;
+    margin: 0 auto;
+    color: var(--text);
+    min-height:600px;
+}
+
+/* Footer*/
+
+footer {
+    padding: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    background: var(--menu)
+}
+/* Item display*/
 figure {
     margin: 0;
     padding: 0;
@@ -26,5 +114,7 @@ figcaption * {
     margin: 0.5rem;
 }
 
-figure > div {
+#current-tab {
+    background-color: var(--highlight);
+    color: var(--menu);
 }

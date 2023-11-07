@@ -1,6 +1,7 @@
 <nav>
-    <a href="index" <?php echo $currentTab === 'home' ? 'class="current-tab"' : "";?>>Home</a>
-    <a href="menu" <?php echo $currentTab === 'menu' ? 'class="current-tab"' : "";?>>Menu</a>
-    <a href="checkout" <?php echo $currentTab === 'checkout' ? 'class="current-tab"' : "";?>>Checkout</a>
-    <a href="myaccount" <?php echo $currentTab === 'myaccount' ? 'class="current-tab"' : "";?>>My Account</a>
+    <ul>
+        <li <?php echo $currentTab === 'Menu' ? 'id="current-tab"' : "";?>><a href="menu.php">Menu</a></li>
+        <li <?php echo $currentTab === 'Home' ? 'id="current-tab"' : "";?>><a href="index.php" >LOCHER</a></li>
+        <li <?php echo $currentTab === 'My Account' ? 'id="current-tab"' : "";?>><a href="myaccount.php" >My Account</a></li>
+    </ul>
 </nav>
