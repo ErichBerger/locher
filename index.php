@@ -1,11 +1,15 @@
 <?php
+    require('model/database.php'); 
+    require('functions.php');
+    
+    $db = new Database();
     $currentTab = 'Home';
+    
+    require('views/partials/head.php');
+    require('views/partials/nav.php');
     require 'views/index.views.php';
 
-
-
-
-
+    require('views/partials/foot.php');
 
 
 /* Note: the following code is in case we're able to do a router.

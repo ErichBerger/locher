@@ -13,7 +13,6 @@
     --background: #9EBC9F;
     --highlight: #E3B5A4;
     --text: #230903;
-
 }
 
 html {
@@ -47,6 +46,7 @@ header {
 nav {
     padding: 0;
     margin: 0;
+    
 
 }
 
@@ -57,23 +57,27 @@ nav ul {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    gap: 5%;
+    
+    
 }
 
 
 nav li {
     margin: 0;
     padding: 0;
-    flex-basis: 30%;
+    flex-basis: 25%;
     text-align: center;
+    
 }
 
 nav a {
-    height: var(--h2);
+    
     text-decoration: none;
     font-size: 1.2rem;
     color: var(--menu-text);
     display: block;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     
 }
 
@@ -83,6 +87,7 @@ nav li:hover {
 }
 /* Main*/
 main {
+    padding-top: 4rem;
     text-align: center;
     margin: 0 auto;
     color: var(--text);
@@ -99,6 +104,25 @@ footer {
     background: var(--menu)
 }
 /* Item display*/
+
+.item-list  {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+    position: center;
+    
+}
+
+.item {
+    border-style: solid;
+    border-color: var(--menu-text);
+    border-radius: 5%;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: var(--highlight);
+}
+
 figure {
     margin: 0;
     padding: 0;
