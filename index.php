@@ -8,7 +8,7 @@
     require('views/partials/head.php');
     require('views/partials/nav.php');
     require 'views/index.views.php';
-
+    //body goes here
     require('views/partials/foot.php');
 
 
