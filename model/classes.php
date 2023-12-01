@@ -87,8 +87,32 @@ class OrderItem {
     }
 }
 
-class Customer {
+class User {
+    //use session fields to initialize customer data.
+    //use
 
+    private $user_id;
+    private $status;
+
+    function __construct() {
+        if ( isset($_SESSION['user_id'])) {
+            $this->user_id = $_SESSION['user_id'];
+        }
+    }
+
+    function isLoggedIn() {
+        return $this->user_id != null;
+    }
+
+    function getUserId() {
+        return $this->user_id;
+    }
+
+    function logIn($username, $password) {
+        $db = Database::instance();
+        //if it's logged in, set session data
+        return $db->logIn($username, $password);
+    }
 }
 
 

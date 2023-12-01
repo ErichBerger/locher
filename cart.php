@@ -5,7 +5,7 @@
    require('model/database.php'); 
    require('functions.php');
    
-   $db = new Database();
+   $db = Database::instance();
    $currentTab = 'Cart';
    $order = $db->getOpenOrder($userID);
    require('views/partials/head.php');

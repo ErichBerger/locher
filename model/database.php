@@ -2,9 +2,11 @@
 require ('model/queries.php');
 require('model/classes.php');
 class Database {
+    //How about making one function that accepts an array for parameterizing, and returns results in an array?
+    private static $db = null;
 
-    private $db;
-    function __construct() {
+
+    private function __construct() {
         $this->db = new mysqli('localhost', 'ics325fa2302', '2224', 'ics325fa2302');
         if(mysqli_connect_errno()) {
             echo '<p>Error connecting to database, please try again.</p>'; 
@@ -12,14 +14,18 @@ class Database {
         }
     }
 
+    public static function instance() {
+        if (self::$db == null) {
+            self::$db = new Database();
+        }
+
+        return self::$db;
+    }
+
+   
+
     function getMenuItems() {
-        /*
-        $id = 0;
-        $name = null;
-        $price = 0;
-        $imageFile = null;
-        $description = null;
-        */
+       
         $itemArray = array();
         
         $stmt = $this->db->prepare("SELECT * FROM menu_item ");
@@ -33,6 +39,14 @@ class Database {
             $itemArray[] = new MenuItem($id, $name, $price, $imageFile, $description);
         }
         return $itemArray;
+    }
+
+    //User Functions
+
+    function logIn($username, $password) {
+
+
+        return false;
     }
 
     function getMenuItem($itemID) {

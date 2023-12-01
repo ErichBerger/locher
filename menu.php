@@ -3,7 +3,7 @@
     require('model/database.php'); 
     require('functions.php');
 
-    $db = new Database();
+    $db = Database::instance();
     $currentTab = 'Menu';
     $user_id = 1; //just a placeholder for when we do login stuff
     
