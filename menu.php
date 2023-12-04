@@ -1,26 +1,53 @@
 
 <?php
-    require('model/database.php'); 
-    require('functions.php');
+    session_start();
+    require('model/database.php'); //database has classes required.
+    require('model/user.php');
+    
 
     $db = Database::instance();
     $currentTab = 'Menu';
-    $user_id = 1; //just a placeholder for when we do login stuff
-    
-    //If existing order has been created, add the menu item to the order, update database.
-    //If order has not been created, create new order, add item to order, update database.
+    $user = new User();
 
     require('views/partials/head.php');
     require('views/partials/nav.php');
+    $order = null;
+    $order_id;
+    if (isset($_SESSION['order_id'])) {                                     //Check to see if an order has been started
+                                                
+        $order = $db->getOrder($_SESSION['order_id']);                      
+
+        if ($order->getUserID() == 0) {                                  //Check if order has customer attached
+
+            if (isset($_SESSION['user_id'])) {                              //Check to see if user is logged in
+                $db->updateOrderUserID($_SESSION['order_id'], $_SESSION['user_id']);
+                $order->setUserID($_SESSION['user_id']);
+            }
+            
+            else {                                                          //If not, display message
+                echo "Look's like you're not logged in. Click <a href='login.php'>here</a> to make sure you're order is saved.";
+            }
+        }                                                                   //No else really needed for this loop, it means the order is attached to a user
+    }
+
+    else {                                                                  //If order has not been created, we also need to check for a few things
+        if(isset($_SESSION['user_id'])) {                                   //If user is logged in, check if they have an open order
+            $order_id = $db->getOpenOrder($_SESSION['user_id']);            //Database checks if user has one, creates if not with user id
+        }
+        else {
+            $order_id = $db->newOrder();
+        }
+        $_SESSION['order_id'] = $order_id;
+        $order = $db->getOrder($order_id);
+    }
+
+    //Actual updating of items
     if (isset($_POST['added_item']) && isset($_POST['quantity'])) {
-        $order = $db->getOpenOrder($user_id);
         $added_item = $db->getMenuItem($_POST['added_item']);
         //Works up to here
         if ($order == NULL) {
-            $db->newOrder($user_id);
             
-            $order = $db->getOpenOrder($user_id);
-            echo "If null, the getOpenOrder function is not working: ";
+            echo "If null, an order was not generated: ";
             var_dump($order);
             
         }

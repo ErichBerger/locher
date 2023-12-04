@@ -10,6 +10,7 @@
     require('views/partials/head.php');
     require('views/partials/nav.php');
     
+    //send functionality to other page
     if (isset($_POST['logOut'])) {
         $user->logOut();
     }
@@ -23,6 +24,5 @@
     }
     
     require('views/partials/foot.php');
-
 
 ?>

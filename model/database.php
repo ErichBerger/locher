@@ -27,22 +27,7 @@ class Database {
 
    
 
-    function getMenuItems() {
-       
-        $itemArray = array();
-        
-        $stmt = $this->db->prepare("SELECT * FROM menu_item ");
-        $stmt->execute();
-        $stmt->store_result();
-        
-        $stmt->bind_result($id, $name, $price, $imageFile, $description);
-        
-        while ($stmt->fetch()) {
-            
-            $itemArray[] = new MenuItem($id, $name, $price, $imageFile, $description);
-        }
-        return $itemArray;
-    }
+    
 
     //User Functions
 
@@ -100,6 +85,23 @@ class Database {
         }
         return Database::ERROR_USER_NOT_ADDED;
     }
+    //For display
+    function getMenuItems() {
+       
+        $itemArray = array();
+        
+        $stmt = $this->db->prepare("SELECT * FROM menu_item ");
+        $stmt->execute();
+        $stmt->store_result();
+        
+        $stmt->bind_result($id, $name, $price, $imageFile, $description);
+        
+        while ($stmt->fetch()) {
+            
+            $itemArray[] = new MenuItem($id, $name, $price, $imageFile, $description);
+        }
+        return $itemArray;
+    }
 
     function getMenuItem($itemID) {
         
@@ -121,36 +123,33 @@ class Database {
 
     }
 
-    function newOrder($user_id) {
+    //function for adding a new order with a user or not, works for both
+    function newOrder($user_id = 0) {
         $id = (int) $user_id;
         $stmt = $this->db->prepare("INSERT INTO customer_order(user_id) VALUES(?)");
         $stmt->bind_param('i', $id);
         $stmt->execute();
-
+        $stmt->store_result();
         if($stmt->affected_rows > 0) {
+            return $stmt->insert_id;
         }
-
     }
-    function getOpenOrder($user_id) {
-        $order = null;
-        /*$order_id = 0;
-        $time_placed = null;
-        $time_completed = null;
-        $order_type = null;
-        $menu_item_id = 0;
-        $quantity = 0;
-        */
-        $order_items = array();
-        
 
-        $stmt = $this->db->prepare("SELECT * FROM customer_order WHERE user_id = ? AND time_completed IS NULL");
-        $stmt->bind_param('i', $user_id);
+    function getOrder($order_id) {
+        $order_id = (int) $order_id;
+        $order = null;
+        $order_items = array();
+
+        $stmt = $this->db->prepare("SELECT order_id, user_id FROM customer_order WHERE order_id = ?");
+        $stmt->bind_param('i', $order_id);
+
         $stmt->execute();
         $stmt->store_result();
-        $stmt->bind_result($order_id, $time_placed, $time_completed, $user_id, $order_type);
+
+        $stmt->bind_result($order_id, $user_id);
         $stmt->fetch();
-    
-        if ($stmt->affected_rows > 0) {
+
+        if ($stmt->affected_rows > 0) { //If an open order exists, return the order
             $order_id = (int) $order_id; //Not sure if necessary, just using to make sure.
             $user_id = (int) $user_id;
             //Retrieve items on that order
@@ -165,20 +164,47 @@ class Database {
             }
             $order = new CustomerOrder($order_id, $user_id, $order_items);
         }
-
         return $order;
+
+    }
+
+    function updateOrderUserID($order_id, $user_id) {
+        $order_id = (int) $order_id;
+        $user_id = (int) $user_id;
+        $stmt = $this->db->prepare("UPDATE customer_order SET user_id=? WHERE order_id = ?");
+        $stmt->bind_param('ii', $user_id, $order_id);
+        $stmt->execute();
+        $stmt->store_result();
+        
+        if ($stmt->affected_rows > 0) {
+            echo 'order updated with user id';
+        }
+    }
+    //Function for when there is not an order, but a user is logged in
+    //Returns order_Id when on hasn't been set by session.
+    function getOpenOrder($user_id) {
+        $order = null;
+        
+        $stmt = $this->db->prepare("SELECT order_id FROM customer_order WHERE user_id = ? AND time_completed IS NULL");
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($order_id);
+        $stmt->fetch();
+
+        if ($stmt->affected_rows > 0) { //If an open order exists, return the order_id
+            return $order_id;
+        }
+
+        else {
+            $order_id = $this->newOrder($user_id);
+
+            return $order_id;
+        }
+        
     }
 
     function addItemToOrder($order_id, $menu_item_id, $quantity) {
-        /*
-        $stmt = $this->db->prepare("INSERT INTO order_item VALUES(?, ?, ?)");
-            $stmt->bind_param('iii', $order_id, $menu_item_id, $quantity);
-            $stmt->execute();
-            
-            if($stmt->affected_rows > 0) {
-                echo "Item added to order.";
-            }
-        */
        
         $stmt = $this->db->prepare("SELECT order_id FROM order_item WHERE order_id = ? AND menu_item_id = ?");
         $stmt->bind_param('ii', $order_id, $menu_item_id);

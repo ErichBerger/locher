@@ -51,6 +51,14 @@ class CustomerOrder {
         $this->order_items = $order_items;
     }
 
+    function setUserID($user_id) {
+        $this->user_id = $user_id;
+    }
+
+    function getUserID() {
+        return $this->user_id;
+    }
+
     function getOrderID() {
         return $this->order_id;
     }

@@ -1,5 +1,3 @@
-
-
 <section id="registration">
         <h2>Fill out the form to register:</h2>
         <form action="register.php" method="post">
