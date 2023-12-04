@@ -23,3 +23,7 @@ Hello, this is a test file for our ICS 325 Project
 - Miscellaneous
     - Update quantities for items in order in filled out form (maybe get quantities from order items? Or use post data?)
     - 
+
+- Login/Register Page
+
+- MyAccount Page

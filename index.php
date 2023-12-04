@@ -1,5 +1,6 @@
 <?php
-    require('model/database.php'); 
+    require('model/database.php');
+    require('model/user.php');
     require('functions.php');
     
     $db = Database::instance();

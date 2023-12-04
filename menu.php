@@ -29,7 +29,6 @@
     }
     $itemArray = $db->getMenuItems();
     
-    
     require ('views/menu.views.php');
 
     require('views/partials/foot.php');

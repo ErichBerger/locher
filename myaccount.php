@@ -1,22 +1,28 @@
 <?php 
+    session_start();
     require('model/database.php');
-    require('model/classes.php');
-    require('functions.php');
+    require('model/user.php');
     
-    $db = new Database();
+    $db = Database::instance();
+    
     $user = new User();
     $currentTab = 'My Account';
-
-    if ($user->isLoggedIn())
     require('views/partials/head.php');
     require('views/partials/nav.php');
-    //logic for determining whether or not the my account view should appear. If not, they'll need to 
-    //login
-    isset($_POST['login']) || !isset($_POST['register']) ? require('views/login.views.php') : "";
     
-
-    isset($_POST['register']) ? require('views/register.views.php') : "";
-
+    if (isset($_POST['logOut'])) {
+        $user->logOut();
+    }
+    
+    if ($user->isLoggedIn()) {
+        require('views/myaccount.views.php');
+    }
+    
+    else {
+        require('views/myaccountalt.views.php');
+    }
+    
     require('views/partials/foot.php');
+
 
 ?>

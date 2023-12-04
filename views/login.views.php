@@ -1,10 +1,18 @@
-<main>
-<p>Note: Based on logic tbd, this page will either require the login view, or the account view</p>
 
-<?php require('forms/login.php'); ?>
 
-<form action="myaccount.php" method="post">
-    <input type="submit" value="Click here to register" name="register">
-</form>
-    
-</main>
+
+<section id="login-form">
+    <h2>Log In to Your Account</h2>
+    <form action="login.php" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</section>
+
+<p>Need to register? Click <a href="register.php">here</a></p>
+

@@ -1,4 +1,4 @@
-<main>
+
     <table>
         <tr>
             <th>Name: </th>
@@ -15,4 +15,4 @@
 
     </table>
     <?php require('forms/checkout.php'); ?>
-</main>
+

@@ -4,6 +4,9 @@ require('model/classes.php');
 class Database {
     //How about making one function that accepts an array for parameterizing, and returns results in an array?
     private static $db = null;
+    public const ERROR_USERNAME_EXISTS = 2;
+    public const ERROR_USER_NOT_ADDED = 3;
+    public const SUCCESS = 1;
 
 
     private function __construct() {
@@ -44,9 +47,58 @@ class Database {
     //User Functions
 
     function logIn($username, $password) {
+        
+        $password =  hash('sha256', $password);
+        
+        $stmt = $this->db->prepare("SELECT user_id FROM customer WHERE username= ? AND password = ?");
+        $stmt->bind_param('ss', $username, $password);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($userID);
+        $stmt->fetch();
+        if ($stmt->affected_rows > 0) {
+            return $userID;
+        }
 
+        return False;
+    }
+
+    function checkUsername($username) {
+        $stmt = $this->db->prepare("SELECT count(*) FROM customer WHERE username=?");
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($num);
+        $stmt->fetch();
+
+        if ($num > 0) {
+            return true;
+        }
 
         return false;
+    }
+
+    function addUser($username, $password, $fname, $lname, $phone, $address, $email) {
+        
+        if ($this->checkUsername($username)) {
+            return Database::ERROR_USERNAME_EXISTS;
+        }
+        
+        else {
+            
+            $password = hash('sha256', $password);
+            $stmt = $this->db->prepare("INSERT INTO customer(username, password, fname, lname, phone, address, email) VALUES (?,?,?,?,?,?,?)");
+           
+            $stmt->bind_param('sssssss', $username, $password, $fname, $lname, $phone, $address, $email);
+            $stmt->execute();
+            
+            $stmt->store_result();
+            $stmt->bind_result($result);
+            if($stmt->affected_rows > 0) {
+                return Database::SUCCESS;
+            }
+        }
+        return Database::ERROR_USER_NOT_ADDED;
     }
 
     function getMenuItem($itemID) {
