@@ -40,7 +40,7 @@ function getUserId() {
 function logIn($username, $password) {
     $db = Database::instance();
     //if it's logged in, set session data
-    $user_id = $db->logIn($username, $password);
+    $user_id = (int) $db->logIn($username, $password);
     if ($user_id) {
         $_SESSION['user_id'] = $user_id;
         //$this->loadUser();
@@ -59,11 +59,13 @@ function addUser($username, $password, $fname, $lname, $phone, $address, $email)
             echo "Username already exists";
             unset($_POST['username']);
             unset($_POST['password']);
+            return false;
             break;
         case Database::ERROR_USER_NOT_ADDED:
             echo "User could not be added";
             unset($_POST['username']);
             unset($_POST['password']);
+            return false;
             break;
         case Database::SUCCESS:
             echo "User added. Attempting login...";
@@ -71,6 +73,7 @@ function addUser($username, $password, $fname, $lname, $phone, $address, $email)
             return true;
             break;
     }
+    return false;
 }
 
 function logOut() {

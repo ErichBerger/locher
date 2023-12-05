@@ -21,7 +21,6 @@
         $phone = $_POST['phone'];
         $address = $_POST['address'];
         $email = $_POST['email'];
-        var_dump($username);
         if($user->addUser($username, $password, $fname, $lname, $phone, $address, $email)) {
             echo 'You are logged in! click <a href="myaccount.php">here</a> to go to your account.';
         }

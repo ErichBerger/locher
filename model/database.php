@@ -60,11 +60,11 @@ class Database {
         $stmt->store_result();
         $stmt->bind_result($userID);
         $stmt->fetch();
-        if ($stmt->affected_rows > 0) {
+        if ($stmt->num_rows > 0) {
             return $userID;
         }
 
-        return False;
+        return 0;
     }
 
     function checkUsername($username) {
@@ -97,7 +97,7 @@ class Database {
             $stmt->execute();
             
             $stmt->store_result();
-            $stmt->bind_result($result);
+            
             if($stmt->affected_rows > 0) {
                 return Database::SUCCESS;
             }
