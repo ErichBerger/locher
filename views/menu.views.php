@@ -9,7 +9,7 @@
                 <p><?= $item->getPrice()?></p>
                 <form method="post">
                     <label for="<?= $item->getName()?> quantity">Quantity: </label>
-                    <input type="text" name="quantity" id="<?= $item->getName()?> quantity" size="2" required placeholder="0">
+                    <input type="text" name="quantity" id="<?= $item->getName()?> quantity" size="2" required placeholder="<?= $item->getQuantity()?>">
                     <button name="added_item" value="<?= $item->getID()?>" type="submit" action="menu.php">Add</button>
                 </form>
             </div>  

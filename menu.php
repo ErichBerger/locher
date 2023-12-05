@@ -38,7 +38,7 @@
             $order_id = $db->newOrder();
         }
         $_SESSION['order_id'] = $order_id;
-        $order = $db->getOrder($order_id);
+        
     }
 
     //Actual updating of items
@@ -51,11 +51,22 @@
             var_dump($order);
             
         }
-
         $db->addItemToOrder($order->getOrderID(), $added_item->getID(), (int) $_POST['quantity']);
     }
+
+    //If anything has changed by updating, repopulate the order
+    $order = $db->getOrder($_SESSION['order_id']);
     $itemArray = $db->getMenuItems();
-    
+    $orderItems = $order->getOrderItems();
+
+    foreach ($itemArray as $item) {
+        $item->setQuantity(0);
+        foreach ($orderItems as $orderItem) { //Will override 0 quantity.
+            if ($item->getID() == $orderItem->getMenuItem()->getID()) {
+                $item->setQuantity($orderItem->getQuantity());
+            }
+        }
+    }
     require ('views/menu.views.php');
 
     require('views/partials/foot.php');

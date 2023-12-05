@@ -142,3 +142,16 @@ figcaption * {
     background-color: var(--highlight);
     color: var(--menu);
 }
+
+table {
+    width: 48vw;
+    margin: auto;
+}
+
+table > * {
+    width:16vw;
+}
+
+.order_item {
+    display: inline-block;
+}

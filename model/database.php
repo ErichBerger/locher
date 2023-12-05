@@ -26,9 +26,28 @@ class Database {
     }
 
    
+    /* uncomment to try user functionality again
+    function loadUser($user_id) {
 
-    
+        $stmt = $this->db->prepare("SELECT fname, lname, phone, address, email FROM customer WHERE user_id = ?");
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result( $fname, $lname, $phone, $address, $email);
+        $stmt->fetch();
+        
+        $results = array();
+        
+        $results['fname'] = $fname;
+        $results['lname'] = $lname;
+        $results['phone'] = $phone;
+        $results['address'] = $address;
+        $results['email'] = $email;
 
+        return $results;
+
+    }
+    */
     //User Functions
 
     function logIn($username, $password) {
@@ -123,6 +142,15 @@ class Database {
 
     }
 
+    function placeOrder($order_id, $time) {
+        $order_id = (int) $order_id;
+        $stmt = $this->db->prepare("UPDATE customer_order SET time_placed = ? WHERE order_id = ?");
+        $stmt->bind_param('si', $time, $order_id);
+        $stmt->execute();
+        $stmt->store_result();
+        return $stmt->affected_rows > 0;
+    }
+
     //function for adding a new order with a user or not, works for both
     function newOrder($user_id = 0) {
         $id = (int) $user_id;
@@ -185,7 +213,7 @@ class Database {
     function getOpenOrder($user_id) {
         $order = null;
         
-        $stmt = $this->db->prepare("SELECT order_id FROM customer_order WHERE user_id = ? AND time_completed IS NULL");
+        $stmt = $this->db->prepare("SELECT order_id FROM customer_order WHERE user_id = ? AND time_placed IS NULL");
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
         $stmt->store_result();
@@ -204,6 +232,16 @@ class Database {
         
     }
 
+    function deleteItemOnOrder($order_id, $menu_item_id) {
+        $stmt = $this->db->prepare("DELETE FROM order_item WHERE order_id = ? AND menu_item_id = ?");
+        $stmt->bind_param('ii', $order_id, $menu_item_id);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->affected_rows > 0) {
+            echo "Item deleted.";
+        }
+    }
+
     function addItemToOrder($order_id, $menu_item_id, $quantity) {
        
         $stmt = $this->db->prepare("SELECT order_id FROM order_item WHERE order_id = ? AND menu_item_id = ?");
@@ -212,11 +250,12 @@ class Database {
         $stmt->store_result();
         $stmt->bind_result($test);
         $stmt->fetch();
-
+        
         if ($stmt->num_rows == 0) {
             $stmt = $this->db->prepare("INSERT INTO order_item VALUES(?, ?, ?)");
             $stmt->bind_param('iii', $order_id, $menu_item_id, $quantity);
             $stmt->execute();
+            $stmt->store_result();
             
             if($stmt->affected_rows > 0) {
                 echo "Item added to order.";
@@ -224,18 +263,15 @@ class Database {
         }
 
         else {
-            $stmt = $this->db->prepare("SELECT quantity FROM order_item WHERE order_id = ? AND menu_item_id = ?");
-            $stmt->bind_param('ii', $order_id, $menu_item_id);
-            $stmt->execute();
-            $stmt->store_result();
-            $stmt->bind_result($old_quantity);
-            $stmt->fetch();
-            $quantity += $old_quantity;
+           
 
             $stmt = $this->db->prepare("UPDATE order_item SET quantity=? WHERE order_id = ? AND menu_item_id = ?");
             $stmt->bind_param('iii', $quantity, $order_id, $menu_item_id);
             $stmt->execute();
-            echo "Successfully updated quantity.";
+            $stmt->store_result();
+            if ($stmt->affected_rows > 0) {
+                echo "Successfully updated quantity.";
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ class MenuItem {
     private $price;
     private $imageFile;
     private $description;
+    private $quantity;
 
     function __construct($id, $name, $price, $imageFile, $description) {
         $this->id = $id;
@@ -35,6 +36,14 @@ class MenuItem {
         return $this->id;
     }
 
+    function getQuantity () {
+        return $this->quantity;
+    }
+
+    function setQuantity($quantity) {
+        $this->quantity = $quantity;
+    }
+
 }
 
 class CustomerOrder {
@@ -49,6 +58,15 @@ class CustomerOrder {
         $this->order_id = $order_id;
         $this->user_id = $user_id;
         $this->order_items = $order_items;
+    }
+
+    function getTotal() {
+        $total = 0;
+        foreach ($this->order_items as $item) {
+            $total += ($item->getMenuItem()->getPrice() * $item->getQuantity());
+            echo $total;
+        }
+        return $total;
     }
 
     function setUserID($user_id) {

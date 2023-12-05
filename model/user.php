@@ -4,13 +4,30 @@ class User {
 
 private $user_id;
 private $status;
+private $fname;
+private $lname;
+private $phone;
+private $address;
+private $email;
 
 function __construct() {
     if ( isset($_SESSION['user_id'])) {
         $this->user_id = $_SESSION['user_id'];
+        //$this->loadUser();
     }
 }
-
+/*
+function loadUser() {
+    $db = Database::instance();
+    $results = $db->loadUser($this->user_id);
+    
+    $this->fname = $results['fname'];
+    $this->lname = $results['lname'];
+    $this->phone = $results['phone'];
+    $this->address = $results['address'];
+    $this->email = $results['email'];
+}
+*/
 function isLoggedIn() {
     return $this->user_id != null;
 }
@@ -26,6 +43,7 @@ function logIn($username, $password) {
     $user_id = $db->logIn($username, $password);
     if ($user_id) {
         $_SESSION['user_id'] = $user_id;
+        //$this->loadUser();
         $this->user_id = $user_id;
         return true;
     }
@@ -57,6 +75,26 @@ function addUser($username, $password, $fname, $lname, $phone, $address, $email)
 
 function logOut() {
     unset($_SESSION['user_id']);
+    unset($_SESSION['order_id']);
+    session_destroy();
 }
+
+
+function getFName() {
+    return $this->fname;
+}
+function getLName() {
+    return $this->lname;
+}
+function getPhone() {
+    return $this->phone;
+}
+function getEmail() {
+    return $this->email;
+}
+function getAddress() {
+    return $this->address;
+}
+
 
 }
